@@ -100,7 +100,7 @@ public class Codelab {
                 .setMaxVersions(Integer.MAX_VALUE)
                 .addColumn(COLUMN_FAMILY_NAME, LAT_COLUMN_NAME)
                 .addColumn(COLUMN_FAMILY_NAME, LONG_COLUMN_NAME));
-    System.out.print(
+    System.out.println(
         "Lookup a specific vehicle on the M86 route on June 1, 2017 from 12:00am to 1:00am:");
     printLatLongPairs(getResult);
   }
@@ -120,7 +120,7 @@ public class Codelab {
         .setRowPrefixFilter(Bytes.toBytes("MTA/M86-SBS/"))
         .setFilter(valueFilter);
 
-    System.out.print("Scan for all m86 heading East during the month:");
+    System.out.println("Scan for all m86 heading East during the month:");
     ResultScanner scanner = table.getScanner(scan);
     for (Result row : scanner) {
       printLatLongPairs(row);
@@ -143,7 +143,7 @@ public class Codelab {
         .setRowPrefixFilter(Bytes.toBytes("MTA/M86-SBS/"))
         .setFilter(valueFilter);
 
-    System.out.print("Scan for all m86 heading West during the month:");
+    System.out.println("Scan for all m86 heading West during the month:");
     ResultScanner scanner = table.getScanner(scan);
     for (Result row : scanner) {
       printLatLongPairs(row);
@@ -157,7 +157,7 @@ public class Codelab {
         .addColumn(COLUMN_FAMILY_NAME, LONG_COLUMN_NAME)
         .withStartRow(Bytes.toBytes("MTA/M86-SBS/1496275200000"))
         .setRowPrefixFilter(Bytes.toBytes("MTA/M86-SBS/1496275200000"));
-    System.out.print("Scan for all M86 buses on June 1, 2017 from 12:00am to 1:00am:");
+    System.out.println("Scan for all M86 buses on June 1, 2017 from 12:00am to 1:00am:");
     ResultScanner scanner = table.getScanner(scan);
     for (Result row : scanner) {
       printLatLongPairs(row);
@@ -172,7 +172,7 @@ public class Codelab {
         .withStartRow(Bytes.toBytes("MTA/M86-SBS/"))
         .setRowPrefixFilter(Bytes.toBytes("MTA/M86-SBS/"));
 
-    System.out.print("Scan for all m86 during the month:");
+    System.out.println("Scan for all m86 during the month:");
     ResultScanner scanner = table.getScanner(scan);
     for (Result row : scanner) {
       printLatLongPairs(row);
@@ -198,7 +198,7 @@ public class Codelab {
         .setRowPrefixFilter(Bytes.toBytes("MTA/M"))
         .setFilter(filter);
 
-    System.out.print("Scan for all buses on June 1, 2017 from 12:00am to 1:00am:");
+    System.out.println("Scan for all buses on June 1, 2017 from 12:00am to 1:00am:");
     ResultScanner scanner = table.getScanner(scan);
     for (Result row : scanner) {
       printLatLongPairs(row);
