@@ -207,6 +207,11 @@ public class Codelab {
 
   private static void printLatLongPairs(Result result) {
     Cell[] raw = result.rawCells();
+    if (raw == null) {
+      System.out.println(
+          "No data was returned. If you recently ran the import job, try again in a minute.");
+      return;
+    }
     assert (raw.length % 2 == 0);
     for (int i = 0; i < raw.length / 2; i++) {
       System.out.print(Bytes.toString(raw[i].getValueArray()));
