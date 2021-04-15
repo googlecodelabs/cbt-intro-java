@@ -56,8 +56,8 @@ public class Codelab {
       String projectId, String instanceId, String tableName, String query) {
 
     if (query.equals("demo")) {
-      while (true) {
-        try (Connection connection = BigtableConfiguration.connect(projectId, instanceId)) {
+      try (Connection connection = BigtableConfiguration.connect(projectId, instanceId)) {
+        while (true) {
           Table table = connection.getTable(TableName.valueOf(tableName));
           Scan scan = new Scan();
           scan.setMaxVersions(Integer.MAX_VALUE)
@@ -72,11 +72,11 @@ public class Codelab {
             i++;
           }
           System.out.printf("Got %d data points%n", i);
-        } catch (IOException e) {
-          System.err.println("Exception while running Codelab: " + e.getMessage());
-          e.printStackTrace();
-          System.exit(1);
         }
+      } catch (IOException e) {
+        System.err.println("Exception while running Codelab: " + e.getMessage());
+        e.printStackTrace();
+        System.exit(1);
       }
     }
 
