@@ -71,7 +71,7 @@ public class Codelab {
           for (Result row : scanner) {
             i++;
           }
-          System.out.printf("Got %i data points%n", i);
+          System.out.printf("Got %d data points%n", i);
         } catch (IOException e) {
           System.err.println("Exception while running Codelab: " + e.getMessage());
           e.printStackTrace();
