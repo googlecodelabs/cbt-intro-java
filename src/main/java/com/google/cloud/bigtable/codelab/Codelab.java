@@ -39,18 +39,47 @@ import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
 
 public class Codelab {
+
   private static final byte[] COLUMN_FAMILY_NAME = Bytes.toBytes("cf");
   private static final byte[] LAT_COLUMN_NAME = Bytes.toBytes("VehicleLocation.Latitude");
   private static final byte[] LONG_COLUMN_NAME = Bytes.toBytes("VehicleLocation.Longitude");
   private static final String[] MANHATTAN_BUS_LINES =
       ("M1,M2,M3,M4,M5,M7,M8,M9,M10,M11,M12,M15,M20,M21,M22,M31,M35,M42,M50,M55,M57,M66,M72,M96,"
-              + "M98,M100,M101,M102,M103,M104,M106,M116,M14A,M34A-SBS,M14D,M15-SBS,M23-SBS,"
-              + "M34-SBS,M60-SBS,M79-SBS,M86-SBS")
+          + "M98,M100,M101,M102,M103,M104,M106,M116,M14A,M34A-SBS,M14D,M15-SBS,M23-SBS,"
+          + "M34-SBS,M60-SBS,M79-SBS,M86-SBS")
           .split(",");
 
-  /** Connects to Cloud Bigtable, runs a query and prints the results. */
+  /**
+   * Connects to Cloud Bigtable, runs a query and prints the results.
+   */
   private static void runQuery(
       String projectId, String instanceId, String tableName, String query) {
+
+    if (query.equals("demo")) {
+      try (Connection connection = BigtableConfiguration.connect(projectId, instanceId)) {
+        while (true) {
+          Table table = connection.getTable(TableName.valueOf(tableName));
+          Scan scan = new Scan();
+          scan.setMaxVersions(Integer.MAX_VALUE)
+              .addColumn(COLUMN_FAMILY_NAME, LAT_COLUMN_NAME)
+              .addColumn(COLUMN_FAMILY_NAME, LONG_COLUMN_NAME)
+              .withStartRow(Bytes.toBytes("MTA/M86-SBS/1496275200000"))
+              .setRowPrefixFilter(Bytes.toBytes("MTA/M86-SBS/1496275200000"));
+          System.out.println("Scan for all M86 buses on June 1, 2017 from 12:00am to 1:00am:");
+          ResultScanner scanner = table.getScanner(scan);
+          int i = 0;
+          for (Result row : scanner) {
+            i++;
+          }
+          System.out.printf("Got %d data points%n", i);
+        }
+      } catch (IOException e) {
+        System.err.println("Exception while running Codelab: " + e.getMessage());
+        e.printStackTrace();
+        System.exit(1);
+      }
+    }
+
     // Create the Bigtable connection, use try-with-resources to make sure it gets closed
     try (Connection connection = BigtableConfiguration.connect(projectId, instanceId)) {
       // Retrieve the table we just created so we can do some reads and writes
